@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+    <script>
+
+        var url = 'https://api.github.com/search/repositories?q=nodejs';
+
+        function makeAjaxCall(resolve, reject) {
+            var xhr = new XMLHttpRequest(url);
+
+            xhr.open('GET', url);
+
+            xhr.addEventListener('readystatechange', function() {
+                if ( xhr.readyState === 4 ) {
+                    if ( xhr.status === 200 ) resolve(xhr);
+                    else reject();
+                }
+            });
+
+            xhr.send();
+        }
+
+        var p = new Promise(makeAjaxCall);
+
+        setTimeout( function() {
+            console.log('Promise in the work...');
+
+            p.then( function(xhr) {
+                // success callback -> trace to ajax resolve()
+                console.log(xhr.responseText);
+            }, function() {}
+            )
+
+        }, 5000);
+    </script>
+</head>
+<body>
+
+</body>
+</html>

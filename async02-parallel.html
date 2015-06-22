@@ -1,0 +1,35 @@
+
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+    <script src="bower_components/async/lib/async.js"></script>
+    <script>
+        function randomPrint(i, callback) {
+            // ~~ flooring capability to make faster than Math.floor
+            var randomInterval = ~~(Math.random() * 1000);
+            setTimeout(function () {
+                console.log(i, ', Interval: ' ,randomInterval);
+                callback(null, randomInterval); // callback will take in two parameters --> error value, result/success value
+            }, randomInterval);
+        }
+
+        var fns = [];
+
+        for(var i = 0; i < 10; i++) {
+            fns.push(randomPrint.bind(null, i));
+        }
+
+        async.parallel(fns, function(err, results) {
+            console.log(results.reduce(function(a, b) {
+                return a + b; } ) );
+        });
+
+    </script>
+</head>
+<body>
+
+</body>
+</html>
+

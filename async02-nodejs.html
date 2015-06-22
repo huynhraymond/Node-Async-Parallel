@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+    <script src="bower_components/async/lib/async.js"></script>
+    <script>
+        // Make research for nodejs mongo and angularjs -->
+        // print array of the result once all the calls make completed
+
+        var urls = ['nodejs', 'angularjs', 'mongo'].map(function(query) {
+            return 'https//api.github.com/search/repositories?q=' + query;
+        });
+
+        var ajaxcalls = [];
+
+        function makeAjaxCall(url, callback) {
+            var xhr = new XMLHttpRequest();
+            xhr.open('GET', url);
+
+            xhr.addEventListener('readystatechange', function() {
+                if ( xhr.readyState === 4) {
+                    if (xhr.status === 200 )  callback(null, JSON.parse(xhr.responseText));
+                    else callback(xhr.responseText, null);
+                }
+            });
+
+            xhr.send();
+        }
+
+        urls.forEach(function(url){
+            ajaxcalls.push(makeAjaxCall.bind(null, url, 'GET'));
+        });
+
+        async.parallel(ajaxcalls, function(err, results, xhr) {
+           if (err) console.log(err);
+
+            else console.log(results);
+        });
+        /*
+        async.parallel(urls.map(function(url) {
+            return makeAjaxCall.bind(null, url);
+        }));  */
+
+    </script>
+</head>
+<body>
+
+</body>
+</html>

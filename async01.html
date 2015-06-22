@@ -1,0 +1,35 @@
+
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+    <script>
+        function randomPrint(i, callback) {
+            var randomInterval = ~~(Math.random() * 1000);
+            setTimeout(function () {
+                console.log(i, ', Interval: ' ,randomInterval);
+                callback(null, randomInterval); // callback will take in two parameters --> error value, result/success value
+            }, randomInterval);
+        }
+        function printsum(err, result) {
+            printsum.results = printsum.results || [];
+            printsum.results.push(result);
+            if (printsum.results.length === 10 ) return printsum.results.reduce(function (a, b) {
+                return a + b;
+            });
+        }
+
+        for(var i = 0; i < 10; i++) {
+            randomPrint(i, printsum);
+        }
+
+
+    </script>
+</head>
+<body>
+
+</body>
+</html>
+
+
